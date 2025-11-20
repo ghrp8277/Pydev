@@ -1,0 +1,18 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons/cascade.png</file>
+    <file>icons/copy.png</file>
+    <file>icons/cut.png</file>
+    <file>icons/paste.png</file>
+    <file>icons/pause-button.png</file>
+    <file>icons/play-button.png</file>
+    <file>icons/tabMode.png</file>
+    <file>icons/tile.png</file>
+    <file>icons/windowMode.png</file>
+    <file>icons/logo.png</file>
+    <file>icons/new.png</file>
+    <file>icons/open.png</file>
+    <file>icons/save.png</file>
+    <file>icons/saveColor.png</file>
+  </qresource>
+</RCC>
