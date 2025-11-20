@@ -1,0 +1,24 @@
+app/
+├─ main.py                    # 진입점 (QApplication 만들고 메인 윈도우 실행)
+├─ core/
+│   ├─ enums.py               # ZeroBasedEnum, ColNum 등 공통 enum
+│   ├─ columns.py             # ColumnSpec, COLUMN_SPECS 등 "컬럼 인터페이스"
+│   ├─ patterns/
+│   │   ├─ memento.py         # TableMemento
+│   │   ├─ command.py         # Command, InsertStepCommand, DeleteStepBlockCommand, PasteStepCommand
+│   │   └─ initializer.py     # StepTableInitializer, NewProcedureInitializer, FileLoadInitializer
+├─ model/
+│   ├─ procedure.py           # Step, Type, Mode, Condition, Report 등 도메인 로직
+│   ├─ file_io.py             # file.load_full_excel, save_full_excel 등 I/O
+│   └─ eis.py                 # (선택) EIS 관련 데이터 구조/헬퍼 따로 뺄 수 있음
+├─ view/
+│   ├─ ui_BuildTestTableWidget.py  # Qt Designer → pyside6-uic 로 생성된 UI 코드
+│   ├─ main_window.py         # MainWindow(QMainWindow) 구현, EIS창 열기, 메뉴 등
+│   └─ dialogs/
+│       └─ eis_dialog.py      # EIS 설정 다이얼로그
+├─ widgets/
+│   ├─ table_widget.py        # 지금 만든 TableWidget 클래스
+│   └─ __init__.py
+└─ resources/
+    ├─ icons/                 # 아이콘 파일들
+    └─ qss/                   # 스타일시트 등 (필요하면)
