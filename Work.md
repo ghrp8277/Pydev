@@ -1,0 +1,22 @@
+# Work Log
+- TableView에 Step/Delimiter 블록 생성을 전담하는 헬퍼를 추가하고 row 정보 시프트 로직을 정리함
+- Step 데이터 로드 시 마지막 Step이면 다음 Step을 자동으로 준비하도록 보장하고 RowInfo에 값을 저장함
+- 컨텍스트 메뉴의 Insert Step이 새 Step/구분자 세트를 만든 뒤 즉시 다음 Step을 대비하도록 수정함
+- Step 생성 시 controller/model과 연동하여 Step 번호를 즉시 표시하고 view row→step index 변환 로직을 추가했으며 자동 생성 Step도 동일하게 처리됨
+- 초기 placeholder Step/Delimiter를 생성해 seed 로드 이전에도 구조를 갖추고, seed 로드시 Step 번호와 Type 콤보가 뷰에 즉시 반영되도록 set_load_data를 보강함
+- Step block 생성 시 View가 즉시 Step 셀/Type 콤보를 준비하도록 _insert_step_block 흐름과 combo 생성 로직을 보강하고, controller는 Step 번호만 세팅하도록 단순화함
+- change_type 이벤트가 마지막 Step에 도달했는지 감지해 View에 다음 Step 생성을 요청하도록 하고, View에 공개 메서드 ensure_next_step을 추가해 Controller에서 호출할 수 있게 함
+- type 콤보 변경 시 model/update/view가 연동되도록 TableModel.update_type, TableView.set_combo_value, change_type 로직을 추가해 콤보 위젯이 사라지던 문제를 해결함
+- UI에서 기본으로 채워진 행들을 초기화하도록 table_view 초기화 시 tableWidget.setRowCount(0)을 호출해 새 Step block이 실제로 최상단에 생성되도록 함
+- 초기 UI에서도 빈 Step/Delimiter가 보이도록 TableView에 placeholder 생성 메서드를 추가하고, TableController set_view 시 기본 5개 Step 블록을 만들어 사용자에게 준비된 테이블을 제공함
+- placeholder Step들 중 실제로 입력할 차례의 row에만 Type 콤보 위젯이 보이도록 활성화 로직을 추가하고, 이전 placeholder의 위젯은 제거해 사용자가 마지막 Step 다음 row만 편집하도록 함
+- 마지막 Step 판정을 RowInfo.data 여부로 구분하고, type 변경 시 mark_step_initialized를 통해 placeholder를 실제 Step으로 승격시켜 미리 만든 빈 row가 마지막 Step으로 취급되지 않도록 수정함
+- 모든 콤보박스가 공백 옵션을 기본으로 가지도록 build_combo_items를 추가하고, StepType의 Sub 항목은 UI 목록에서 제외하여 초기 상태는 빈 값으로만 노출되게 함
+- 콤보박스 항목 자체에서 공백을 제거하고, 생성 시 setCurrentIndex(-1)로 미선택 상태를 유지해 초기 표시에 선택값이 보이지 않도록 수정함
+- StepType에 is_terminal()를 추가하고, model/update_type이 선택된 enum을 반환하도록 하여 controller가 End 타입인지 판별해 더 이상 이어지는 Step을 생성하지 않도록 함
+- End 타입 선택 시 placeholder row를 모두 제거하도록 view에 remove_placeholder_steps_after를 추가하고, controller에서 End 타입일 때는 추가 Step을 생성하지 않고 placeholder를 비움
+- View 측에서 _ensure_trailing_step_exists 시 해당 Step이 End면 placeholder 제거 후 새 Step 생성을 멈추도록 terminal 판정을 추가해 End 선택시 더 이상 빈 Step이 나타나지 않음
+- placeholder Step이 실제로 사용될 때 번호가 부여되도록 mark_step_initialized에서 Step 셀을 채우고, controller/model이 type 업데이트 시 반환값을 이용해 End 여부와 Step 번호를 일관되게 관리함
+- End 타입 선택 시 model에서도 이후 Step 엔티티를 잘라내도록 trim_after를 추가하고, controller에서 이를 호출해 View/Model이 동시에 마지막 Step에서 멈추도록 정리함
+- placeholder row에서 Type이 선택되면 model.update_type이 새 ProcedureEntity를 생성하도록 _ensure_step_entry를 추가해, End 선택 시에도 정확한 step_index를 찾아 trim_after가 정상 동작하도록 함
+- placeholder를 실제 Step으로 확정할 때 모델에서 엔티티를 생성하고 번호를 반환하도록 update_type/_ensure_step_entry를 수정, controller는 해당 번호를 view에 전달해 Step 셀을 채우고 End 여부를 정확히 판별함
